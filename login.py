@@ -1,19 +1,22 @@
 from tkinter import *
 from PIL import ImageTk
-from tkinter import messagebox
-import pymysql
+from tkinter import messagebox,ttk
+from subprocess import call
+#import pymysql
+#import pymysql as mq
+import mysql.connector
 def login_user():
     if usernameEntry.get()=='' or passwordEntry.get()=='':
         messagebox.showerror('Error','All Feilds Are Required')
     else:
         try:
-            con=pymysql.connect(host='localhost',user='root',password="ARyan42*@123",database="logindetails")
+            con=mysql.connector.connect(host='localhost',user='root',password='',database="python_app")
             mycursor=con.cursor()
             print("connected to db")
         except:
             messagebox.showerror('Error','Connection Has Not Established Try Again')
             return
-    query ='use logindetails'
+    query ='use python_app'
     mycursor.execute(query)
     query='select * from login where username=%s and password=%s'
     mycursor.execute(query,(usernameEntry.get(),passwordEntry.get()))
@@ -22,6 +25,8 @@ def login_user():
         messagebox.showerror('error','Invalid Username Or Password')
     else:
         messagebox.showinfo('Welcome','Login Is Sucessfull')
+        call(["python", "transactionpage.py"])
+        
 #FUNCTION
 
 def user_enter(event):
